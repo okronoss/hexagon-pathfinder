@@ -1,89 +1,117 @@
-body {
+.dark {
     background: #2E3440;
 }
 
-.clear:after {
-    content: "";
-    display: block;
-    clear: both;
+.light {
+    background: #ECEFF4;
+}
+
+/* Styles for Hexagon grid */
+#grid {
+    min-height: 1166px;
+    min-width: 1166px;
+    overflow: scroll;
+}
+.row {
+    clear: left;
+}
+
+.row:nth-child(even) {
+    margin-left: 53px;
+}
+
+.row * {
+    background: #81A1C1;
+}
+
+.row *:before, .row *:after {
+    border-top-color: #81A1C1 !important;
+    border-bottom-color: #81A1C1 !important;
+}
+
+#start {
+    background: #A3BE8C;
+}
+
+#start:before, #start:after {
+    border-top-color: #A3BE8C !important;
+    border-bottom-color: #A3BE8C !important;
+}
+
+#goal {
+    background: #BF616A;
+}
+
+#goal:before, #goal:after {
+    border-top-color: #BF616A !important;
+    border-bottom-color: #BF616A !important;
 }
 
 .active {
     background: #88C0D0;
 }
 
+.active:before, .active:after {
+    border-top-color: #88C0D0 !important;
+    border-bottom-color: #88C0D0 !important;
+}
+
 .explored {
     background: #5E81AC;
 }
 
+.explored:before, .explored:after {
+    border-top-color: #5E81AC !important;
+    border-bottom-color: #5E81AC !important;
+}
+
 .shortest {
-    background: #A3BE8C;
+    background: #B48EAD;
 }
 
-#grid {
-    position: relative;
-    width: 60%;
-    margin: 0 auto;
-    padding: 0;
+.shortest:before, .shortest:after {
+    border-top-color: #B48EAD !important;
+    border-bottom-color: #B48EAD !important;
 }
 
-#grid li {
-    list-style-type: none;
-    position: relative;
+.blocked {
+    background: #4C566A;
+}
+
+.blocked:before, .blocked:after {
+    border-top-color: #4C566A !important;
+    border-bottom-color: #4C566A !important;
+}
+
+.hexagon {
     float: left;
-    width: 4.75%;
-    padding: 0 0 5.48498845265589% 0;
-    -o-transform: rotate(-60deg) skewY(30deg);
-    -moz-transform: rotate(-60deg) skewY(30deg);
-    -webkit-transform: rotate(-60deg) skewY(30deg);
-    -ms-transform: rotate(-60deg) skewY(30deg);
-    transform: rotate(-60deg) skewY(30deg);
-    overflow: hidden;
-    visibility: hidden;
+    margin-top: 31px;
+    margin-left: 2px;
+    width: 104px;
+    height: 60px;
+    position: relative;
+    transition: background-color 0.5s;
 }
 
-#grid li:nth-child(20n+2), #grid li:nth-child(20n+3), #grid li:nth-child(20n+4), #grid li:nth-child(20n+5),
-#grid li:nth-child(20n+6), #grid li:nth-child(20n+7), #grid li:nth-child(20n+8), #grid li:nth-child(20n+9),
-#grid li:nth-child(20n+10), #grid li:nth-child(20n+11), #grid li:nth-child(20n+12), #grid li:nth-child(20n+13),
-#grid li:nth-child(20n+14), #grid li:nth-child(20n+15), #grid li:nth-child(20n+16), #grid li:nth-child(20n+17),
-#grid li:nth-child(20n+18){
-    margin: 0 0.25%;
-}
-
-#grid li:nth-child(40n+20) {
-    margin-left: 0.0%;
-}
-
-#grid li:nth-child(40n+20),#grid li:nth-child(40n+21),#grid li:nth-child(40n+22),#grid li:nth-child(40n+23),
-#grid li:nth-child(40n+24),#grid li:nth-child(40n+25),#grid li:nth-child(40n+26),#grid li:nth-child(40n+27),
-#grid li:nth-child(40n+28),#grid li:nth-child(40n+29),#grid li:nth-child(40n+30),#grid li:nth-child(40n+31),
-#grid li:nth-child(40n+32),#grid li:nth-child(40n+33),#grid li:nth-child(40n+34),#grid li:nth-child(40n+35),
-#grid li:nth-child(40n+36),#grid li:nth-child(40n+37),#grid li:nth-child(40n+38),#grid li:nth-child(40n+39)
-{
-    margin-top: -2.72843015334429%;
-    margin-bottom: -2.72843015334429%;
-    -o-transform: translateX(50%) rotate(-60deg) skewY(30deg);
-    -moz-transform: translateX(50%) rotate(-60deg) skewY(30deg);
-    -webkit-transform: translateX(50%) rotate(-60deg) skewY(30deg);
-    -ms-transform: translateX(50%) rotate(-60deg) skewY(30deg);
-    transform: translateX(50%) rotate(-60deg) skewY(30deg);
-}
-
-#grid li * {
-    visibility: visible;
-}
-
-#grid li .hexagon {
+.hexagon:before {
+    content: " ";
+    width: 0;
+    height: 0;
+    border-bottom: 30px solid;
+    border-left: 52px solid transparent;
+    border-right: 52px solid transparent;
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #ECEFF4;
-    -o-transform: skewY(-30deg) rotate(60deg);
-    -moz-transform: skewY(-30deg) rotate(60deg);
-    -webkit-transform: skewY(-30deg) rotate(60deg);
-    -ms-transform: skewY(-30deg) rotate(60deg);
-    transform: skewY(-30deg) rotate(60deg);
-    overflow: hidden;
+    top: -30px;
+    transition: border-bottom-color 0.5s;
+}
+
+.hexagon:after {
+    content: " ";
+    width: 0;
+    position: absolute;
+    bottom: -30px;
+    border-top: 30px solid;
+    border-left: 52px solid transparent;
+    border-right: 52px solid transparent;
+    transition: border-top-color 0.5s;
 }
