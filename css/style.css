@@ -8,8 +8,6 @@
 
 /* Styles for Hexagon grid */
 #grid {
-    min-height: 1166px;
-    min-width: 1166px;
     overflow: scroll;
 }
 .row {
@@ -86,7 +84,8 @@
 .hexagon {
     float: left;
     margin-top: 31px;
-    margin-left: 2px;
+    margin-left: 1px;
+    margin-right: 1px;
     width: 104px;
     height: 60px;
     position: relative;
