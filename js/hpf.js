@@ -1,50 +1,41 @@
 const hexWidth = 106;
 const hexHeight = 91;
 
-const Grid = {
-    _width: window.innerWidth,
-    _height: window.innerHeight,
-    _rows: Math.floor(this.height / hexHeight),
-    _cols: Math.floor(this.width / hexWidth),
-    get width() {
-        return this._width;
-    },
-    get height() {
-        return this._height;
-    },
-    get rows() {
-        return this._rows;
-    },
-    get cols() {
-        return this._cols;
-    },
-    set width(width) {
-        this._width = width;
-        this._cols = Math.floor(this.width / hexWidth);
-    },
-    set height(height) {
-        this._height = height;
-        this._rows = Math.floor(this.height / hexHeight);
-    },
-    setWidthHeight: function(width, height) {
+const Grid = class {
+    constructor(width = window.innerWidth, height = window.innerHeight) {
         this.width = width;
         this.height = height;
-    },
-    generate: function () {
+    }
+    get width() {
+        return this._width;
+    }
+    get height() {
+        return this._height;
+    }
+    get rows() {
+        return Math.floor(this.height / hexHeight);
+    }
+    get cols() {
+        return Math.floor(this.width / hexWidth);
+    }
+    set width(width) {
+        this._width = width;
+    }
+    set height(height) {
+        this._height = height;
+    }
+    generate() {
         // delete grid if it already exists
-        if(document.getElementById("grid")) Grid.destroy("grid");
+        if(document.getElementById("grid")) this.destroy("grid");
 
         // set up initial grid
         let grid = document.createElement("DIV");
-        let width = this.width - (this.width % hexWidth);
-        let height = this.height - (this.height % hexHeight);
+        let minWidth = this.width - (this.width % hexWidth);
+        let minHeight = this.height - (this.height % hexHeight);
 
         grid.setAttribute("id", "grid");
-        grid.style.cssText = "min-width:" + width + "px; min-height:" + height + "px";
+        grid.style.cssText = "min-width:" + minWidth + "px; min-height:" + minHeight + "px";
 
-        console.log(Math.floor(this.height / hexHeight));
-        console.log(this.rows);
-        console.log(this.cols);
         for (let i = 0; i < this.rows; i++) {
             let row = document.createElement("DIV");
             row.setAttribute("class", "row");
@@ -60,15 +51,18 @@ const Grid = {
         }
 
         document.body.appendChild(grid);
-    },
-    destroy: function(id) {
+    }
+    destroy(id) {
         document.getElementById(id).remove();
     }
 }
 
-window.addEventListener('resize', function(event) {
-    Grid.setWidthHeight(window.innerWidth, window.innerHeight);
-    Grid.generate();
-}, true);
+let grid = new Grid(window.innerWidth, window.innerHeight);
 
-Grid.generate();
+grid.generate();
+
+window.addEventListener('resize', function(event) {
+    grid.width = window.innerWidth;
+    grid.height = window.innerHeight;
+    grid.generate();
+}, true);
