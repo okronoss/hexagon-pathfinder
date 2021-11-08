@@ -1,16 +1,19 @@
 const hexWidth = 106;
 const hexHeight = 91;
 
-const Grid = class {
+class Grid {
+    #width;
+    #height;
+
     constructor(width = window.innerWidth, height = window.innerHeight) {
         this.width = width;
         this.height = height;
     }
     get width() {
-        return this._width;
+        return this.#width;
     }
     get height() {
-        return this._height;
+        return this.#height;
     }
     get rows() {
         return Math.floor(this.height / hexHeight);
@@ -19,10 +22,10 @@ const Grid = class {
         return Math.floor(this.width / hexWidth);
     }
     set width(width) {
-        this._width = width;
+        this.#width = width;
     }
     set height(height) {
-        this._height = height;
+        this.#height = height;
     }
     generate() {
         // delete grid if it already exists
@@ -57,9 +60,56 @@ const Grid = class {
     }
 }
 
-let grid = new Grid(window.innerWidth, window.innerHeight);
+class Point {
+    #x = 0;
+    #y = 0;
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+    get x() {
+        return this.#x;
+    }
+    get y() {
+        return this.#y;
+    }
+    set x(val) {
+        this.#x = val;
+    }
+    set y(val) {
+        this.#y = val;
+    }
+}
 
+class Start extends Point{
+    constructor(x, y) {
+        super(x, y);
+        this.checkConflict();
+        this.applyClass();
+    }
+    checkConflict(...id) {
+
+    }
+    applyClass() {
+        document.getElementById("r" + this.y + "c" + this.x).classList.add("start");
+    }
+}
+
+let grid = new Grid(window.innerWidth, window.innerHeight);
+let start = new Start(Math.floor(Math.random() * grid.cols), Math.floor(Math.random() * grid.rows));
+let end = new Point(Math.floor(Math.random() * grid.cols), Math.floor(Math.random() * grid.rows));
+
+// if the end point is the same as a
+while(start.x === end.x && start.y === end.y) {
+    end.x = Math.floor(Math.random() * grid.cols);
+    end.y = Math.floor(Math.random() * grid.rows);
+}
+// initialize grid
 grid.generate();
+// set start point
+// set end point
+
+//
 
 window.addEventListener('resize', function(event) {
     grid.width = window.innerWidth;
