@@ -27,20 +27,20 @@
     border-bottom-color: #81A1C1 !important;
 }
 
-#start {
+.start {
     background: #A3BE8C;
 }
 
-#start:before, #start:after {
+.start:before, .start:after {
     border-top-color: #A3BE8C !important;
     border-bottom-color: #A3BE8C !important;
 }
 
-#goal {
+.end {
     background: #BF616A;
 }
 
-#goal:before, #goal:after {
+.end:before, .end:after {
     border-top-color: #BF616A !important;
     border-bottom-color: #BF616A !important;
 }
