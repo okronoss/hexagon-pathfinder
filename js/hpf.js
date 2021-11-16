@@ -1,9 +1,8 @@
-const hexWidth = 106;
-const hexHeight = 91;
-
 class Grid {
     #width;
     #height;
+    #hexWidth = 106;
+    #hexHeight = 91;
 
     constructor(width = window.innerWidth, height = window.innerHeight) {
         this.width = width;
@@ -15,11 +14,17 @@ class Grid {
     get height() {
         return this.#height;
     }
+    get hexWidth() {
+        return this.#hexWidth;
+    }
+    get hexHeight() {
+        return this.#hexHeight;
+    }
     get rows() {
-        return Math.floor(this.height / hexHeight);
+        return Math.floor(this.height / this.hexHeight);
     }
     get cols() {
-        return Math.floor(this.width / hexWidth);
+        return Math.floor(this.width / this.hexWidth);
     }
     set width(width) {
         this.#width = width;
@@ -33,8 +38,8 @@ class Grid {
 
         // set up initial grid
         let grid = document.createElement("DIV");
-        let minWidth = this.width - (this.width % hexWidth);
-        let minHeight = this.height - (this.height % hexHeight);
+        let minWidth = this.width - (this.width % this.hexWidth);
+        let minHeight = this.height - (this.height % this.hexHeight);
 
         grid.setAttribute("id", "grid");
         grid.style.cssText = "min-width:" + minWidth + "px; min-height:" + minHeight + "px";
@@ -63,9 +68,13 @@ class Grid {
 class Point {
     #x = 0;
     #y = 0;
-    constructor(x, y) {
+    #unique = false;
+    #cssClass = "";
+    constructor(x, y, cssClass = "", unique = false) {
         this.x = x;
         this.y = y;
+        this.cssClass = cssClass
+        this.applyClass(this.cssClass);
     }
     get x() {
         return this.#x;
@@ -73,46 +82,64 @@ class Point {
     get y() {
         return this.#y;
     }
+    get unique() {
+        return this.#unique;
+    }
+    get cssClass() {
+        return this.#cssClass;
+    }
     set x(val) {
+        // TODO: when x or y is changed, update the class list of the current node then update the class list of the new node
+        document.getElementById("r" + this.y + "c" + this.x).classList.remove(this.cssClass);
         this.#x = val;
+        document.getElementById("r" + this.y + "c" + this.x).classList.add(this.cssClass);
     }
     set y(val) {
+        // TODO: when x or y is changed, update the class list of the current node then update the class list of the new node
         this.#y = val;
     }
+    set unique(val) {
+        this.#unique = val;
+    }
+    set cssClass(val) {
+        this.#cssClass = val;
+    }
+    applyClass(cssClass = "") {
+        if(this.unique) this.clearAllClass(cssClass);
+        document.getElementById("r" + this.y + "c" + this.x).classList.add(cssClass);
+    }
+    clearAllClass(cssClass) {
+        let current = document.getElementsByClassName(cssClass);
+        // for each item in current remove cssClass
+        current.forEach((item) => {
+            item.classList().remove(cssClass);
+        });
+
+    }
 }
 
-class Start extends Point{
-    constructor(x, y) {
-        super(x, y);
-        this.checkConflict();
-        this.applyClass();
-    }
-    checkConflict(...id) {
-
-    }
-    applyClass() {
-        document.getElementById("r" + this.y + "c" + this.x).classList.add("start");
-    }
-}
-
+// Initialize and draw grid
 let grid = new Grid(window.innerWidth, window.innerHeight);
-let start = new Start(Math.floor(Math.random() * grid.cols), Math.floor(Math.random() * grid.rows));
-let end = new Point(Math.floor(Math.random() * grid.cols), Math.floor(Math.random() * grid.rows));
-
-// if the end point is the same as a
-while(start.x === end.x && start.y === end.y) {
-    end.x = Math.floor(Math.random() * grid.cols);
-    end.y = Math.floor(Math.random() * grid.rows);
-}
-// initialize grid
 grid.generate();
-// set start point
-// set end point
 
-//
+// set start point
+let start = new Point(Math.floor(Math.random() * grid.cols / 2),
+    Math.floor(Math.random() * grid.rows / 2),
+    "start",
+    true);
+
+// set end point
+let end = new Point(Math.floor(Math.random() * grid.cols / 2 + grid.cols / 2),
+    Math.floor(Math.random() * grid.rows / 2 + grid.rows / 2),
+    "end",
+    true);
 
 window.addEventListener('resize', function(event) {
     grid.width = window.innerWidth;
     grid.height = window.innerHeight;
     grid.generate();
+    start.x = Math.floor(Math.random() * grid.cols / 2);
+    start.y = Math.floor(Math.random() * grid.rows / 2);
+    end.x = Math.floor(Math.random() * grid.cols / 2 + grid.cols / 2);
+    end.y = Math.floor(Math.random() * grid.rows / 2 + grid.rows / 2);
 }, true);
