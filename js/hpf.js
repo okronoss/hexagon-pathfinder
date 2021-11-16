@@ -69,10 +69,12 @@ class Point {
     #x = 0;
     #y = 0;
     #unique = false;
+    #cssClass = "";
     constructor(x, y, cssClass = "", unique = false) {
         this.x = x;
         this.y = y;
-        this.applyClass(cssClass);
+        this.cssClass = cssClass
+        this.applyClass(this.cssClass);
     }
     get x() {
         return this.#x;
@@ -83,16 +85,24 @@ class Point {
     get unique() {
         return this.#unique;
     }
+    get cssClass() {
+        return this.#cssClass;
+    }
     set x(val) {
-        this.#x = val;
         // TODO: when x or y is changed, update the class list of the current node then update the class list of the new node
+        document.getElementById("r" + this.y + "c" + this.x).classList.remove(this.cssClass);
+        this.#x = val;
+        document.getElementById("r" + this.y + "c" + this.x).classList.add(this.cssClass);
     }
     set y(val) {
-        this.#y = val;
         // TODO: when x or y is changed, update the class list of the current node then update the class list of the new node
+        this.#y = val;
     }
     set unique(val) {
         this.#unique = val;
+    }
+    set cssClass(val) {
+        this.#cssClass = val;
     }
     applyClass(cssClass = "") {
         if(this.unique) this.clearAllClass(cssClass);
